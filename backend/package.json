@@ -1,22 +1,28 @@
 {
-  "name": "todolist_backend",
-  "version": "1.0.0",
-  "description": "Projeto pessoal para aprimorar conhecimnetos backend",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "build": "rimraf ./build && tsc",
-    "start": "node build/index.js",
-    "dev": "ts-node-dev src/index.ts"
-  },
-  "author": "AleexGarcia",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^20.5.6",
-    "ts-node-dev": "^2.0.0"
-  }
+   "name": "todolist_backend",
+   "version": "1.0.0",
+   "description": "Projeto pessoal para aprimorar conhecimnetos backend",
+   "main": "app.js",
+   "scripts": {
+      "test": "jest",
+      "build": "rimraf ./build && tsc",
+      "start": "ts-node src/index.ts",
+      "dev": "ts-node-dev src/app.ts",
+      "typeorm": "typeorm-ts-node-commonjs"
+   },
+   "author": "AleexGarcia",
+   "license": "ISC",
+   "dependencies": {
+      "express": "^4.18.2",
+      "pg": "^8.11.3",
+      "reflect-metadata": "^0.1.13",
+      "typeorm": "^0.3.17"
+   },
+   "devDependencies": {
+      "@types/express": "^4.17.17",
+      "@types/node": "^16.18.46",
+      "ts-node": "10.7.0",
+      "ts-node-dev": "^2.0.0",
+      "typescript": "4.5.2"
+   }
 }
