@@ -1,15 +1,44 @@
-import { User } from "../entities/User";
-import { UserRepository } from "../repositories/UserRepository";
+import User from "../entity/User";
 import { AppDataSource } from "../data-source";
-export class UserService {
-    private userRepository: UserRepository
+import { UserRepository } from "../repositories/UserRepository";
+import { sign } from "jsonwebtoken";
 
-    constructor(userRepository = new UserRepository(AppDataSource.manager)){
+export class UserService {
+
+    userRepository: UserRepository;
+    constructor(userRepository = new UserRepository(AppDataSource.manager)) {
         this.userRepository = userRepository;
     }
-
-    async createUser(userName: string, email: string, password: string): Promise<User>{
-        const user = new User(userName,email,password);
+    createUser = async (name: string, email: string, password: string): Promise<User> => {
+        const user = new User(name, email, password);
         return this.userRepository.createUser(user);
+    }
+
+    getUserById = async (id: string): Promise<User | null> => {
+
+        return this.userRepository.getUserById(id);
+    }
+
+    getAuthenticatedUser = (email: string, password: string): Promise<User | null> => {
+        
+        return this.userRepository.getUserByEmailAndPassword(email, password);
+    }
+    
+    getToken = async (email: string, password: string): Promise<string> => {
+        const user = await this.getAuthenticatedUser(email, password);
+        
+        if(!user) throw new Error('Email/password invalid');
+        
+        const tokenData = {
+            name: user?.name,
+            email: user?.email
+        }
+        const tokenKey = 'lenovoLGMatematica'
+        const tokenOptions = {
+            subject: user?.id
+        }
+
+        const token = sign(tokenData, tokenKey, tokenOptions);
+        return token;
     }
 }
