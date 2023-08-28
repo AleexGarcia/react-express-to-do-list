@@ -6,27 +6,41 @@ import User from "./User";
 export default class Task {
 
     @PrimaryGeneratedColumn("uuid")
-    id: string
+    private _id: string
 
     @Column()
-    title: string
+    private _title: string
 
     @Column()
-    status: boolean
+    private _status: boolean
 
     @ManyToOne(() => User, (user) => user.tasks)
-    user?: User
+    private _user!: User
 
-    constructor(title: string) {
-        this.id = randomUUID();
-        this.title = title;
-        this.status = false;
+    constructor(title: string, user: User) {
+        this._title = title;
+        this._user = user;
+        this._id = randomUUID();
+        this._status = false;
     }
 
+    set title(title: string) {
+        this._title = title;
+    }
+    get title(): string {
+        return this._title;
+    }
+    set status(status: boolean) {
+        this._status = status;
+    }
+    get status(): boolean {
+        return this._status;
+    }
+    get id(): string {
+        return this._id;
+    }
+    get user(): User {
+        return this._user;
+    }
 
 }
-
-
-// + Atributos: id, title, description, status (boolean), userId
-// + Relações: Uma Task pertence a um User
-// + Métodos: Nenhum método especial

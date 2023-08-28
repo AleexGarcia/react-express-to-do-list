@@ -2,6 +2,7 @@ import User from "../entity/User";
 import { AppDataSource } from "../data-source";
 import { UserRepository } from "../repositories/UserRepository";
 import { sign } from "jsonwebtoken";
+import Task from "../entity/Task";
 
 export class UserService {
 
@@ -9,6 +10,7 @@ export class UserService {
     constructor(userRepository = new UserRepository(AppDataSource.manager)) {
         this.userRepository = userRepository;
     }
+
     createUser = async (name: string, email: string, password: string): Promise<User> => {
         const user = new User(name, email, password);
         return this.userRepository.createUser(user);
@@ -41,4 +43,5 @@ export class UserService {
         const token = sign(tokenData, tokenKey, tokenOptions);
         return token;
     }
+
 }

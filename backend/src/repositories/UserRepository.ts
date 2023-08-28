@@ -31,4 +31,14 @@ export class UserRepository {
         })
     }
 
+    async addTaskToUser(user: User): Promise<User>{
+        return await this.manager.save(user);
+    }
+    async updateTaskToUser(user: User): Promise<User>{
+        return await this.manager.save(user);
+    }
+
+    async deleteTaskToUser(user: User): Promise<User>{
+        return await this.manager.save(user);
+    }
 }

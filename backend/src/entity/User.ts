@@ -17,7 +17,7 @@ export default class User {
     password: string
 
     @OneToMany(() => Task, task => task.user)
-    tasks?: Task[];
+    tasks!: Task[];
 
     constructor(name: string, email: string, password: string){
         this.name = name;

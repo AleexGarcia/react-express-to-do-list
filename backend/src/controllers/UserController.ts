@@ -16,10 +16,16 @@ export class UserController {
         return response.status(201).json({ message: 'Usuário criado' });
     }
     
-    getUserById = (request: Request, response: Response): Response => {
+    getUserById = async (request: Request, response: Response): Promise<Response>  => {
         const id = request.body.id;
-        const user = this.userService.getUserById(id);
-        return response.status(201).json(JSON.stringify(user));
+        const user = await this.userService.getUserById(id);
+        if(!user) return response.status(400).json({message: 'invalid id'})
+        return response.status(201).json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            task: user.tasks
+        });
     }
 
     generateAuthToken = (request: Request, response: Response): Response => {
