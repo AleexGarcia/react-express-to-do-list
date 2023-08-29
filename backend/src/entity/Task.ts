@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { randomUUID } from 'crypto'
 import User from "./User";
 
-@Entity('task')
+@Entity('tasks')
 export default class Task {
 
     @PrimaryGeneratedColumn("uuid")
@@ -15,11 +15,11 @@ export default class Task {
     private _status: boolean
 
     @ManyToOne(() => User, (user) => user.tasks)
-    private _user!: User
+    user: User
 
     constructor(title: string, user: User) {
         this._title = title;
-        this._user = user;
+        this.user = user;
         this._id = randomUUID();
         this._status = false;
     }
@@ -39,8 +39,6 @@ export default class Task {
     get id(): string {
         return this._id;
     }
-    get user(): User {
-        return this._user;
-    }
+
 
 }

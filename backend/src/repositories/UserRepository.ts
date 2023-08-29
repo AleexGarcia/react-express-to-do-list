@@ -9,8 +9,7 @@ export class UserRepository {
     }
 
     async createUser(user: User): Promise<User>{
-        const resposta = await this.manager.save(user);
-        return resposta;
+        return  await this.manager.save(user);
     }
 
     async getUserById(id: string): Promise<User | null>{

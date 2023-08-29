@@ -21,8 +21,7 @@ export class TaskService {
 
     const task = new Task(title, user);
 
-    this.taskRepository.createTask(task);
-    this.addTaskToUser(task, user);
+    await this.taskRepository.createTask(task);
     return this.addTaskToUser(task, user);
   }
 
@@ -47,18 +46,27 @@ export class TaskService {
     throw new Error('Invalid id / userId');
   }
   deleteTask = async (id: string, userId: string): Promise<DeleteResult> => {
-    const user = await this.userRepository.getUserById(userId);
-    const deleteResult = await this.taskRepository.deleteTask(id);
+    const [user, deleteResult] = await Promise.all([
+      this.userRepository.getUserById(userId),
+      this.taskRepository.deleteTask(id)
+    ])
+
+
     if (deleteResult.affected === 1 && user) {
       this.deleteTaskToUser(user, id);
     }
     return deleteResult;
   }
   private addTaskToUser = async (task: Task, user: User): Promise<User> => {
+
+    if (!user.tasks) user.tasks = [];
+
     user.tasks.push(task);
+
     return this.userRepository.addTaskToUser(user)
   }
   private updateTaskToUser = async (user: User, task: Task) => {
+    if (!user.tasks) throw new Error('Nenhum elemento adicionado');
     const indexTask = user.tasks.findIndex(arrayTask => arrayTask.id === task.id);
     if (indexTask !== -1) {
       user.tasks.splice(indexTask, 1, task);
@@ -67,6 +75,8 @@ export class TaskService {
     throw new Error('Invalid task Id');
   }
   private deleteTaskToUser = async (user: User, taskId: string) => {
+    if (!user.tasks) throw new Error('Nenhum elemento adicionado');
+
     const indexTask = user.tasks.findIndex(arrayTask => arrayTask.id === taskId);
     if (indexTask !== -1) {
       user.tasks.splice(indexTask, 1);

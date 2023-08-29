@@ -2,7 +2,6 @@ import User from "../entity/User";
 import { AppDataSource } from "../data-source";
 import { UserRepository } from "../repositories/UserRepository";
 import { sign } from "jsonwebtoken";
-import Task from "../entity/Task";
 
 export class UserService {
 
