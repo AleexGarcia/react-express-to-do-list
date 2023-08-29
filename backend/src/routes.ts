@@ -14,10 +14,10 @@ router.get('/auth/login', userController.generateAuthToken);
 //crud task
 router.post('/task', verifyAuth, taskController.createTask);
 router.get('/task/:id', verifyAuth, taskController.getTask);
-router.delete('/task/:id/:userId', verifyAuth, taskController.deleteTask);
-router.patch('/task/:id/:userId', verifyAuth, taskController.updateTask);
+router.delete('/task/:id', verifyAuth, taskController.deleteTask);
+router.patch('/task/:id', verifyAuth, taskController.updateTask);
 //get all
-router.get('/task/:userId');
+router.get('/task');
 
 
 
