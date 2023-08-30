@@ -10,7 +10,7 @@ const taskController = new TaskController();
 
 //auth
 router.post('/auth/signup', userController.createUser);
-router.get('/auth/login', userController.generateAuthToken);
+router.post('/auth/login', userController.generateAuthToken);
 //crud task
 router.post('/task', verifyAuth, taskController.createTask);
 router.get('/task/:id', verifyAuth, taskController.getTask);

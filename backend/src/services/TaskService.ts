@@ -21,8 +21,10 @@ export class TaskService {
 
     const task = new Task(title, user);
 
-    await this.taskRepository.createTask(task);
-    return this.addTaskToUser(task, user);
+    const taskResponse = await this.taskRepository.createTask(task);
+    await this.addTaskToUser(task, user);
+
+    return taskResponse;
   }
 
   getTask = async (id: string): Promise<Task | null> => {

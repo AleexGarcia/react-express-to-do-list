@@ -10,14 +10,18 @@ export class TaskController {
         this.taskService = taskService;
     }
 
-    createTask = (request: Request, response: Response): Response => {
-        const task = request.body;
-
-        if (!task.title)
+    createTask = async (request: Request, response: Response): Promise<Response> => {
+        const {title, userId} = request.body;
+  
+        if (!title || !userId)  
             return response.status(400).json({ message: 'Bad request' });
-        this.taskService.createTask(task.title, task.userId);
-
-        return response.status(201).json({ message: 'Task created' });
+        const task = await this.taskService.createTask(title, userId);
+        
+        return response.status(201).json({
+            id: task.id,
+            title: task.title,
+            status: task.status
+        });
     }
 
     getTask = async (request: Request, response: Response): Promise<Response> => {
