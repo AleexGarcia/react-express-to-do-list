@@ -16,7 +16,7 @@ export default class User {
     @Column()
     password: string
 
-    @OneToMany(() => Task, task => task.user,{eager: true})
+    @OneToMany(() => Task, task => task.user)
     tasks!: Task[];
 
     constructor(name: string, email: string, password: string){

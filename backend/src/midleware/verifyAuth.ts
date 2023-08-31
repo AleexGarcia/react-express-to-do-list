@@ -7,7 +7,7 @@ export function verifyAuth (request: Request, response: Response, next: NextFunc
     if(authToken){
         const [ ,token] = authToken.split(' ');
         try{
-            const { sub } = verify(token, 'lenovoLGMatematica');
+            const { sub } = verify(token, '#x82$cs<QK#^<I2`MsE%;:sGD4?I+6bx:U6BFDX?:sJz&rIw47$@%t|Y|Wv3.fE');
          
             return next();
         }catch(err){

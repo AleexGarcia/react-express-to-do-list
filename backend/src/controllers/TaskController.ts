@@ -48,13 +48,17 @@ export class TaskController {
         return response.status(200).json(tasks);
     }
 
-    updateTask = (request: Request, response: Response): Response => {
+    updateTask = async (request: Request, response: Response): Promise<Response> => {
         const id = request.params.id;
-        const { task, userId } = request.body;
-
+        const { userId } = request.body;
+        
         try {
-            this.taskService.updateTask(id, task.title, task.status, userId);
-            return response.status(200).json({ message: 'OK' });
+            const task = await this.taskService.updateTask(id, userId);
+            return response.status(200).json({
+               id: task?.id,
+               title: task?.title,
+                status: task?.status
+            });
         } catch {
             return response.status(400).json({ message: 'Not Found' })
         }
@@ -64,6 +68,7 @@ export class TaskController {
     deleteTask = async (request: Request, response: Response) => {
         const id = request.params.id;
         const { userId } = request.body;
+     
         const deleteResult = await this.taskService.deleteTask(id, userId);
         if (deleteResult.affected === 1) {
             return response.status(204).json({ message: 'No Content' })

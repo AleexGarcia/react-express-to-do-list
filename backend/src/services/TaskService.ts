@@ -33,24 +33,23 @@ export class TaskService {
     return await this.taskRepository.getAllTasks(userId);
   }
 
-  updateTask = async (id: string, title: string, status: boolean, userId: string): Promise<Task | null> => {
+  updateTask = async (id: string, userId: string): Promise<Task | null> => {
     const user = await this.userRepository.getUserById(userId);
     if (user) {
       const task = await this.taskRepository.getTask(id);
       if (task) {
-        task.status = status;
-        task.title = title;
+        task.status = true;
         return await this.taskRepository.updateTask(task);
       }
-      throw new Error('invalid userId');
+      throw new Error('invalid id task');
     }
-
     throw new Error('invalid userId');
 
   }
   deleteTask = async (id: string, userId: string): Promise<DeleteResult> => {
 
     const user = await this.userRepository.getUserById(userId);
+
     if (user) {
       return this.taskRepository.deleteTask(id)
     } else {

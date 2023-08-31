@@ -35,7 +35,7 @@ export class UserService {
             name: user?.name,
             email: user?.email
         }
-        const tokenKey = 'lenovoLGMatematica'
+        const tokenKey = '#x82$cs<QK#^<I2`MsE%;:sGD4?I+6bx:U6BFDX?:sJz&rIw47$@%t|Y|Wv3.fE'
         const tokenOptions = {
             subject: user?.id
         }

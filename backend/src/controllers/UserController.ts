@@ -31,13 +31,13 @@ export class UserController {
     generateAuthToken = async (request: Request, response: Response): Promise<Response> => {
         const {email, password} = request.body;
         if(!email || !password)
-            return response.status(500).json({ message: 'Email/password invalid' })
+            return response.status(401).json({ message: 'Email/password invalid' })
         
         try{
             const token = await this.userService.getToken(email, password);
             return response.status(200).json({token});
         }catch(err){
-            return response.status(500).json({ message: 'Email/password invalid' })
+            return response.status(401).json({ message: 'Unauthorized' })
         }
     }
 

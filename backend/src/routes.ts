@@ -19,7 +19,7 @@ router.get('/task/:id', verifyAuth, taskController.getTask);
 router.delete('/task/:id', verifyAuth, taskController.deleteTask);
 router.patch('/task/:id', verifyAuth, taskController.updateTask);
 //get all
-router.post('/alltask', verifyAuth,taskController.getAllTasks);
+router.post('/task/all', verifyAuth,taskController.getAllTasks);
 
 
 

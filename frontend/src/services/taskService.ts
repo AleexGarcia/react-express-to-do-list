@@ -1,6 +1,7 @@
 import { api } from "./api"
 import jwtDecode from 'jwt-decode'
 import { JwtPayload } from "../interfaces"
+import { AxiosResponse } from "axios";
 export const createTask = async (title: string, token: string) => {
 
     try {
@@ -22,25 +23,37 @@ export const createTask = async (title: string, token: string) => {
     }
 
 }
-export const updateTask = (status: boolean) => {
-    // const headers = {
-    //     'Content-Type': 'application/json',
-    //     authorization: `Bearer ${token}`
-    // }
+export const updateTask = async (idTask: string, token: string): Promise<AxiosResponse> => {
+    const userId = getUserIdFromToken(token);
+    return await api.patch(`/task/${idTask}`, { userId: userId }, {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    })
+
 }
-export const deleteTask = () => {
-    // const headers = {
-    //     'Content-Type': 'application/json',
-    //     authorization: `Bearer ${token}`
-    // }
+export const deleteTask = async (idTask: string, token: string): Promise<AxiosResponse> => {
+
+    const userId = getUserIdFromToken(token);
+    return await api.delete(`/task/${idTask}`, {
+        headers: {
+            authorization: `Bearer ${token}`
+        },
+        data: {
+            userId: userId
+        }
+
+    })
+
 }
+
 export const getAllTasks = async (token: string) => {
     const headers = {
         'Content-Type': 'application/json',
         authorization: `Bearer ${token}`
     }
     const userId = getUserIdFromToken(token);
-    const response = await api.post('/alltask', {
+    const response = await api.post('/task/all', {
         userId: userId
     }, { headers })
     return response;

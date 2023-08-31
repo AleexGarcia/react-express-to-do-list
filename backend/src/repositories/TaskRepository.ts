@@ -14,11 +14,13 @@ export class TaskRepository {
   }
 
   getTask = async (id: string): Promise<Task | null> => {
-    return await this.manager.findOne(Task, {
+   
+    const res = await this.manager.findOne(Task, {
       where: {
         id: id
       }
     })
+    return res;
   }
   getAllTasks = async (userId: string): Promise<Task[]> => {
     return await this.manager.find(Task, {
@@ -34,10 +36,6 @@ export class TaskRepository {
   }
 
   deleteTask = async (id: string): Promise<DeleteResult> => {
-    return await this.manager.delete(Task, {
-      where: {
-        id: id
-      }
-    })
+    return await this.manager.delete(Task,{id: id});
   }
 }

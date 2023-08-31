@@ -1,10 +1,10 @@
-import { Box, Flex, TextField, IconButton, Tooltip } from "@radix-ui/themes";
+import { Box, Flex, TextField, IconButton, Tooltip, colorProp } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { ITask } from "../interfaces";
 import Task from "./Task";
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { createTask, getAllTasks } from "../services/taskService";
+import { createTask, deleteTask, getAllTasks, updateTask } from "../services/taskService";
 import { getToken } from "../services/storage";
 
 type Inputs = {
@@ -13,7 +13,7 @@ type Inputs = {
 
 const ToDo = () => {
 
-    const token = getToken();
+    const token = getToken() as string;
     const [toDos, setToDos] = useState<Array<ITask>>([]);
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
@@ -28,11 +28,36 @@ const ToDo = () => {
     useEffect(() => {
         if (token) {
             getAllTasks(token).then(response => {
-              setToDos(response.data);
+                setToDos(response.data);
             })
         }
-    })
-    
+    }, [])
+
+    const removeTask = async (id: string,token: string) => {
+        try{
+            const res = await deleteTask(id,token)
+            if(res.status === 204){
+                const list = toDos.filter(task => task.id !== id);
+                setToDos(list);
+            }else{
+                throw console.error('Erro ao deletar user');
+            }
+            
+        }catch{
+
+        }
+    }
+
+    const updateStatus = async(id: string, token: string) => {
+       
+       try{
+           await updateTask(id,token);
+       }catch(err: any){
+            console.log(err.message)
+       }
+
+    }
+
     return (
         <Box>
             <Flex className="flex flex-col container w-10/12 mx-auto text-stone-300 gap-5">
@@ -60,7 +85,18 @@ const ToDo = () => {
                 <Flex className="flex flex-col rounded">
                     {
                         toDos?.map(task => {
-                            return <Task key={task.id} {...task} />
+                            return (
+                                <Task
+                                    key={task.id}
+                                    title={task.title}
+                                    status={task.status}
+                                    deleteTask={() => removeTask(task.id, token)}
+                                    updateTask={() => updateStatus(task.id, token)}
+                             
+                                />
+
+                            )
+
                         })
                     }
                 </Flex>
