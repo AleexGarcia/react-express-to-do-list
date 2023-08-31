@@ -41,7 +41,8 @@ export class UserController {
         }
     }
 
-    
+    verifyToken = async (request: Request, response: Response): Promise<Response> => {
+        return response.status(200).json({message: 'authorized'})
+    }
 
-    
 }

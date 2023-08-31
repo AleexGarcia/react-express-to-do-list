@@ -9,7 +9,7 @@ type Inputs = {
 }
 
 const Signup = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {name ,email, password } = data;

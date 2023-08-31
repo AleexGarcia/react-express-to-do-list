@@ -26,4 +26,16 @@ export const signup = async (name: string, email: string, password: string) => {
     }
 }
 
+export const verifyToken = async(token: string) => {
+    try{
+        const response = await api.get('auth/verify',{
+            headers: {
+                authorization: `Bearer ${token}`}
+            })
+        return response;
+    }catch{
+        throw Error('Invalid token');
+    }
+}
+
 

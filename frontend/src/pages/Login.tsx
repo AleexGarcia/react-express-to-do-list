@@ -6,7 +6,8 @@ import { saveToken } from "../services/storage";
 import { useNavigate, Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "../context/AuthContext";
 
 
 const schema = yup.object({
@@ -27,6 +28,7 @@ const Login = () => {
     });
     const [isNotValid, setValid] = useState(false);
     const navigate = useNavigate();
+    const {setIsLoggedIn}  = useContext(AppContext)
 
     const onSubmit: SubmitHandler<FormData> = async (formData) => {
         try {
@@ -36,6 +38,7 @@ const Login = () => {
 
             if (response.status === 200) {
                 saveToken(response.data.token);
+                setIsLoggedIn(true);
                 navigate('/todo');
             }
 
