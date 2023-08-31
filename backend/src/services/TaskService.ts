@@ -46,6 +46,7 @@ export class TaskService {
     throw new Error('invalid userId');
 
   }
+  
   deleteTask = async (id: string, userId: string): Promise<DeleteResult> => {
 
     const user = await this.userRepository.getUserById(userId);
