@@ -1,10 +1,10 @@
 import { Box, Flex, TextField, IconButton, Tooltip } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { ITask } from "../interfaces";
 import Task from "./Task";
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { createTask } from "../services/taskService";
+import { createTask, getAllTasks } from "../services/taskService";
 import { getToken } from "../services/storage";
 
 type Inputs = {
@@ -13,19 +13,26 @@ type Inputs = {
 
 const ToDo = () => {
 
+    const token = getToken();
     const [toDos, setToDos] = useState<Array<ITask>>([]);
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { title } = data;
-        const token = getToken();
-        if(token){
-            const response = await createTask(title,token);
-            console.log(response);
+        if (token) {
+            const response = await createTask(title, token);
             response.status === 201 ? setToDos([...toDos, response.data]) : alert('Erro server')
-        } 
+        }
     }
 
+    useEffect(() => {
+        if (token) {
+            getAllTasks(token).then(response => {
+              setToDos(response.data);
+            })
+        }
+    })
+    
     return (
         <Box>
             <Flex className="flex flex-col container w-10/12 mx-auto text-stone-300 gap-5">

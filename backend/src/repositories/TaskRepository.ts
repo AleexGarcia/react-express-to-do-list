@@ -9,6 +9,7 @@ export class TaskRepository {
   }
 
   createTask = async (task: Task) => {
+
     return await this.manager.save(task);
   }
 
@@ -28,12 +29,12 @@ export class TaskRepository {
       }
     })
   }
-  updateTask = async (task: Task):Promise<Task> => {
+  updateTask = async (task: Task): Promise<Task> => {
     return await this.manager.save(task);
   }
 
   deleteTask = async (id: string): Promise<DeleteResult> => {
-    return await this.manager.delete(Task,{
+    return await this.manager.delete(Task, {
       where: {
         id: id
       }

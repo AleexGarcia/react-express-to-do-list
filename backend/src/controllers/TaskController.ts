@@ -11,12 +11,13 @@ export class TaskController {
     }
 
     createTask = async (request: Request, response: Response): Promise<Response> => {
-        const {title, userId} = request.body;
-  
-        if (!title || !userId)  
+        const { title, userId } = request.body;
+
+        if (!title || !userId)
             return response.status(400).json({ message: 'Bad request' });
+
         const task = await this.taskService.createTask(title, userId);
-        
+
         return response.status(201).json({
             id: task.id,
             title: task.title,
@@ -34,16 +35,23 @@ export class TaskController {
     }
 
     getAllTasks = async (request: Request, response: Response): Promise<Response> => {
-        const {userId} = request.body;
-        let tasks = this.taskService.getAllTasks(userId);
-        if(!tasks) return response.status(404).json({message: 'Not Found'})
+        const { userId } = request.body;
+        let resDB = await this.taskService.getAllTasks(userId);
+        if (!resDB) return response.status(404).json({ message: 'Not Found' })
+        const tasks = resDB.map(task => {
+            return {
+                id: task.id,
+                title: task.title,
+                status: task.status
+            }
+        })
         return response.status(200).json(tasks);
     }
 
     updateTask = (request: Request, response: Response): Response => {
         const id = request.params.id;
-        const {task, userId} = request.body;
-      
+        const { task, userId } = request.body;
+
         try {
             this.taskService.updateTask(id, task.title, task.status, userId);
             return response.status(200).json({ message: 'OK' });
@@ -55,8 +63,8 @@ export class TaskController {
 
     deleteTask = async (request: Request, response: Response) => {
         const id = request.params.id;
-        const {userId} = request.body;
-        const deleteResult = await this.taskService.deleteTask(id,userId);
+        const { userId } = request.body;
+        const deleteResult = await this.taskService.deleteTask(id, userId);
         if (deleteResult.affected === 1) {
             return response.status(204).json({ message: 'No Content' })
         }

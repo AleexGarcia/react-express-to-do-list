@@ -3,7 +3,9 @@ import { UserController } from "./controllers/UserController";
 import { verifyAuth } from "./midleware/verifyAuth";
 import { TaskController } from "./controllers/TaskController";
 
+
 export const router = Router();
+
 
 const userController = new UserController();
 const taskController = new TaskController();
@@ -17,7 +19,7 @@ router.get('/task/:id', verifyAuth, taskController.getTask);
 router.delete('/task/:id', verifyAuth, taskController.deleteTask);
 router.patch('/task/:id', verifyAuth, taskController.updateTask);
 //get all
-router.get('/task');
+router.post('/alltask', verifyAuth,taskController.getAllTasks);
 
 
 

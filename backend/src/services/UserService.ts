@@ -12,6 +12,7 @@ export class UserService {
 
     createUser = async (name: string, email: string, password: string): Promise<User> => {
         const user = new User(name, email, password);
+        user.tasks = [];
         return this.userRepository.createUser(user);
     }
 
