@@ -12,7 +12,7 @@ interface Task {
 const Task = ({ title, status, deleteTask, updateTask }: Task) => {
     const [isChecked, setCheck] = useState(status);
     return (
-        <Flex className="flex gap-4 justify-around p-4 bg-slate-800">
+        <Flex className="flex gap-4 justify-around p-4 bg-slate-800 last:rounded-b-lg first:rounded-t-lg border-b-1 last:border-b-0 ">
             <IconButton onClick={() => {
                 updateTask();
                 setCheck(true);

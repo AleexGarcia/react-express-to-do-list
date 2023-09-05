@@ -61,6 +61,7 @@ export const getAllTasks = async (token: string) => {
 
 const getUserIdFromToken = (token: string): string | null => {
     const decodedToken = jwtDecode(token) as JwtPayload | null
+    
     return decodedToken ? decodedToken.sub : decodedToken;
 
 }
