@@ -1,32 +1,44 @@
 import { createContext, useEffect, useState } from "react";
 
 interface IThemeContext {
-    isDarkTheme: boolean,
-    setTheme: (theme: boolean) => void
+    theme: 'dark' | 'light',
+    setTheme: (theme: 'dark' | 'light') => void
 }
 
 export const ThemeContext = createContext({} as IThemeContext);
 
 export const ThemeProvider = ({ children }: any) => {
 
-    const [isDarkTheme, setTheme] = useState<boolean>(false);
-
+    const [theme, setTheme] = useState<'dark' | 'light'>('light');
+    
     const rawSetTheme = () => {
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            setTheme(true);
-            document.documentElement.classList.add('dark');
-        } else {
-            setTheme(false);
-            document.documentElement.classList.remove('dark');
+        const method = theme === 'dark' ? 'add' : 'remove';
+        document.documentElement.classList[method]('dark');
+        if(method === 'remove'){
+            localStorage.setItem('theme','light');
+        }else{
+            localStorage.setItem('theme','dark')
         }
     }
 
+    const checkDarkMode = () => {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+    }
+    
+    useEffect(()=>{
+        checkDarkMode();
+    },[]);
+
     useEffect(() => {
         rawSetTheme();
-    }, [isDarkTheme]);
+    }, [theme]);
 
     return (
-        <ThemeContext.Provider value={{ isDarkTheme, setTheme }}>
+        <ThemeContext.Provider value={{ theme, setTheme }}>
             {children}
         </ThemeContext.Provider>
     )

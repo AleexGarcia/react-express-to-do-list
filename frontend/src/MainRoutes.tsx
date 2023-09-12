@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ToDoList from "./pages/ToDoList";
 import { useContext } from "react";
-import { AppContext } from "./context/AuthContext";
+import { AppContext } from "./context/AppContext";
 import { getToken } from "./services/storage";
 import { verifyToken } from "./services/authService";
 import jwtDecode from "jwt-decode";

@@ -7,7 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useState } from "react";
-import { AppContext } from "../context/AuthContext";
+import { AppContext } from "../context/AppContext";
 
 const schema = yup.object({
   email: yup
@@ -48,23 +48,33 @@ const Login = () => {
   };
 
   return (
-    <Flex className="max-w-lg mx-auto flex flex-col gap-2 px-4 py-10 items-center bg-slate-800 rounded-lg">
-      <Heading className="text-center font-bold text-xl">SIGN IN</Heading>
+    <Flex
+      className="
+      form
+      "
+    >
+      <Heading className="form__title">
+        SIGN IN
+      </Heading>
       <Form.Root onSubmit={handleSubmit(onSubmit)}>
-        <Flex className="flex flex-col gap-4  sm:min-w-350">
+        <Flex className="flex flex-col gap-4">
           <Form.Field name="email">
-            <Flex className="text-white flex flex-row justify-between mb-2">
+            <Flex className="label">
               <Form.Label>Email: </Form.Label>
               <Form.Message match={() => !!errors.password}>
                 {errors.email?.message}
               </Form.Message>
             </Flex>
             <Form.Control asChild>
-              <input className="w-full px-1 py-2" {...register("email")} />
+              <input
+                className="input"
+                autoComplete="username"
+                {...register("email")}
+              />
             </Form.Control>
           </Form.Field>
           <Form.Field name="password">
-            <Flex className="text-white  flex flex-row justify-between mb-2">
+            <Flex className=" label">
               <Form.Label>Password: </Form.Label>
               <Form.Message match={() => !!errors.password}>
                 {errors.password?.message}
@@ -72,30 +82,28 @@ const Login = () => {
             </Flex>
             <Form.Control asChild>
               <input
+                autoComplete="current-password"
                 type="password"
-                className="w-full px-1 py-2"
+                className="input"
                 {...register("password")}
               />
             </Form.Control>
           </Form.Field>
           <Form.Submit asChild>
-            <Button
-              className="bg-white rounded-lg p-2 text-lg font-semibold"
-              type="submit"
-            >
+            <Button className="button" type="submit">
               Login
             </Button>
           </Form.Submit>
         </Flex>
         {isNotValid && (
-          <Box className="mt-2 text-center">
+          <Box className="mt-2 text-center dark:text-primary-dark">
             <span>Invalid email / password</span>
           </Box>
         )}
       </Form.Root>
       <hr />
       <Box className="text-center">
-        <Text className="">
+        <Text className="dark:text-primary-dark">
           Need an account? <Link to={"/signup"}>SIGN UP</Link>
         </Text>
       </Box>

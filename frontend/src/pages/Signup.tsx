@@ -42,12 +42,12 @@ const Signup = () => {
   };
 
   return (
-    <Flex className="max-w-lg mx-auto flex flex-col gap-2 px-4 py-10 items-center bg-slate-800 rounded-lg">
-      <Heading className="text-center font-bold text-xl">SIGN UP</Heading>
+    <Flex className="form">
+      <Heading className="form__title">SIGN UP</Heading>
       <Form.Root onSubmit={handleSubmit(onSubmit)}>
-        <Flex className="flex flex-col gap-4 px-4 py-10 bg-slate-800 rounded-lg sm:min-w-350">
+        <Flex className="flex flex-col gap-4">
           <Form.FormField name="name">
-            <Flex className="text-white flex flex-row justify-between mb-2">
+            <Flex className="label">
               <Form.Label>Name: </Form.Label>
               <Form.Message match={() => !!errors.name}>
                 {errors.name?.message}
@@ -55,25 +55,26 @@ const Signup = () => {
             </Flex>
             <Form.Control asChild>
               <input
-                className="py-2 w-full outline-none"
+
+                className="input"
                 type="text"
                 {...register("name")}
               />
             </Form.Control>
           </Form.FormField>
           <Form.Field name="email">
-            <Flex className="text-white flex flex-row justify-between mb-2">
+            <Flex className="label">
               <Form.Label>Email: </Form.Label>
               <Form.Message match={() => !!errors.password}>
                 {errors.email?.message}
               </Form.Message>
             </Flex>
             <Form.Control asChild>
-              <input className="w-full px-1 py-2" {...register("email")} />
+              <input className="input" {...register("email")} />
             </Form.Control>
           </Form.Field>
           <Form.Field name="password">
-            <Flex className="text-white  flex flex-row justify-between mb-2">
+            <Flex className="label">
               <Form.Label>Password: </Form.Label>
               <Form.Message match={() => !!errors.password}>
                 {errors.password?.message}
@@ -81,8 +82,9 @@ const Signup = () => {
             </Flex>
             <Form.Control asChild>
               <input
+                autoComplete="password"
                 type="password"
-                className="w-full px-1 py-2"
+                className="input"
                 {...register("password")}
               />
             </Form.Control>
@@ -99,7 +101,7 @@ const Signup = () => {
       </Form.Root>
       <hr />
       <Box className="text-center">
-        <Text className="">
+        <Text className="dark:text-primary-dark">
           Already a user? <Link to={"/"}>LOGIN</Link>
         </Text>
       </Box>

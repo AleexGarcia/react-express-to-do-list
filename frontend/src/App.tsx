@@ -2,18 +2,20 @@
 import MainRoutes from "./MainRoutes";
 import Layout from "./components/Layout"
 import { BrowserRouter } from 'react-router-dom';
-import { AppContextProvider } from "./context/AuthContext";
-
+import { AppContextProvider } from "./context/AppContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
- 
+
 
   return (
     <BrowserRouter>
       <AppContextProvider>
-        <Layout>
-          <MainRoutes />
-        </Layout>
+        <ThemeProvider>
+          <Layout>
+            <MainRoutes />
+          </Layout>
+        </ThemeProvider>
       </AppContextProvider>
     </BrowserRouter>
   )

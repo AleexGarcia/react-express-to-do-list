@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@layer components {
+    .button{
+        @apply bg-white rounded-lg p-2 text-lg font-semibold hover:opacity-90
+    }
+    .form{
+        @apply max-w-[280px] sm:max-w-xs mx-auto py-10 w-full flex flex-col gap-2 items-center rounded-lg bg-bg-default dark:bg-bg-dark
+    }
+    .input{
+        @apply w-full px-1 py-2 border-1
+    }
+    .label{
+        @apply flex flex-row justify-between mb-2 dark:text-primary-dark
+    }
+    .form__title{
+        @apply text-center font-bold text-xl dark:text-primary-dark
+    }
+}

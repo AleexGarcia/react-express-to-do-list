@@ -1,4 +1,11 @@
-import {  Flex, TextField, IconButton, Tooltip } from "@radix-ui/themes";
+import {
+  Flex,
+  TextField,
+  IconButton,
+  Tooltip,
+  Button,
+  Text,
+} from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ITask } from "../interfaces";
@@ -23,16 +30,19 @@ const ToDo = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { title } = data;
     if (token) {
       const response = await createTask(title, token);
-      response.status === 201
-        ? setToDos([...toDos, response.data])
-        : alert("Erro server");
+      if (response.status === 201) {
+        setToDos([...toDos, response.data]);
+      } else {
+      }
     }
+    reset();
   };
 
   useEffect(() => {
@@ -63,19 +73,33 @@ const ToDo = () => {
     }
   };
 
+  const filterToDos = (params: "active" | "completed" | "all"): void => {
+    getAllTasks(token).then((response) => {
+      const fullList: Array<ITask> = response.data;
+      if (params === "all") {
+        setToDos(fullList);
+      } else {
+        const filteredList =
+          params === "active"
+            ? fullList.filter((task) => !task.status)
+            : fullList.filter((task) => task.status);
+        setToDos(filteredList);
+      }
+    });
+  };
+
   return (
-    <Flex className="flex-grow py-10 flex flex-col container w-10/12 mx-auto text-stone-300 gap-5">
+    <Flex className="flex-grow py-10 flex flex-col container max-w-[280px] sm:max-w-lg mx-auto text-primary-default dark:text-primary-dark gap-5">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex className="p-4 bg-slate-800 rounded-lg flex justify-between gap-4 items-center">
+        <Flex className="p-4 bg-bg-default dark:bg-bg-dark rounded-lg flex justify-between gap-4 items-center">
           <TextField.Root>
             <TextField.Input
               {...register("title", { required: true })}
-              className="bg-transparent outline-none "
+              className="bg-transparent outline-none w-full"
               placeholder="Create a new todo..."
             />
             {errors.title && <span>This field is required</span>}
           </TextField.Root>
-
           <Tooltip multiline content="Add to do.">
             <IconButton radius="full" type="submit">
               <AiOutlinePlusCircle />
@@ -83,7 +107,7 @@ const ToDo = () => {
           </Tooltip>
         </Flex>
       </form>
-      <Flex className="flex flex-col rounded">
+      <Flex className="flex flex-col rounded overflow-y-auto h-[45vh]">
         {toDos?.map((task) => {
           return (
             <Task
@@ -95,6 +119,21 @@ const ToDo = () => {
             />
           );
         })}
+        {toDos && (
+          <Flex className="flex flex-row justify-between p-4 bg-bg-default dark:bg-bg-dark rounded-b-lg">
+            <Text>
+              <span>5</span> item left
+            </Text>
+            <Flex className="flex flex-row gap-4">
+              <Button onClick={() => filterToDos("all")}>All</Button>
+              <Button onClick={() => filterToDos("active")}>Active</Button>
+              <Button onClick={() => filterToDos("completed")}>
+                Completed
+              </Button>
+            </Flex>
+            <Button>Clear Completed</Button>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

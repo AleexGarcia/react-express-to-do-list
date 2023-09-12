@@ -76,5 +76,8 @@ export class TaskController {
         return response.status(400).json({ message: 'Not Found' })
     }
 
+    deleteAllTasks =async (request: Request, response: Response) => {
+        
+    }
 
 }

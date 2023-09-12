@@ -21,7 +21,7 @@ router.delete('/task/:id', verifyAuth, taskController.deleteTask);
 router.patch('/task/:id', verifyAuth, taskController.updateTask);
 //get all
 router.post('/task/all', verifyAuth,taskController.getAllTasks);
-
+router.delete('/task/all',verifyAuth,taskController.deleteAllTasks)
 
 
 

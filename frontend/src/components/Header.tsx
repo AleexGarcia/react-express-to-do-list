@@ -1,16 +1,16 @@
 import { Box, Button, Flex, Heading, IconButton } from "@radix-ui/themes";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { BsSun } from "react-icons/bs";
 import { MdDarkMode } from "react-icons/md";
-import { AppContext } from "../context/AuthContext";
+import { AppContext } from "../context/AppContext";
 import { deleteToken } from "../services/storage";
+import { ThemeContext } from "../context/ThemeContext";
 const Header = () => {
   const { setUser, isLoggedIn, setIsLoggedIn } = useContext(AppContext);
-  const [colorMode, setColorMode] = useState<boolean>(false);
+  const {theme, setTheme} = useContext(ThemeContext);
   const toggleColorMode = () => {
-    
-  };
-
+     theme === 'dark' ? setTheme('light') : setTheme('dark');
+  }
   const logout = () => {
     setIsLoggedIn(false);
     setUser(null);
@@ -19,21 +19,21 @@ const Header = () => {
 
   return (
     <Box className="bg-transparent w-full">
-      <Flex className="py-4 w-10/12 container mx-auto flex flex-row justify-between">
-        <Heading className="text-2xl font-bold -tracking-tighter">
+      <Flex className="p-4 max-w-lg container mx-auto flex flex-row justify-between">
+        <Heading className="text-2xl sm:text-4xl font-bold -tracking-tighter text-white">
           TO DO LIST
         </Heading>
         <Flex className="flex flex-row gap-4">
           {isLoggedIn && (
             <Button
               onClick={logout}
-              className="bg-slate-600 px-4 rounded-md text-white hover:opacity-60"
+              className="button px-4"
             >
               Logout
             </Button>
           )}
           <IconButton onClick={toggleColorMode}>
-            {colorMode ? <BsSun /> : <MdDarkMode />}
+            {theme === 'light' ? <BsSun /> : <MdDarkMode />}
           </IconButton>
         </Flex>
       </Flex>
