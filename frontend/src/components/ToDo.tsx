@@ -1,4 +1,4 @@
-import { Box, Flex, TextField, IconButton, Tooltip } from "@radix-ui/themes";
+import {  Flex, TextField, IconButton, Tooltip } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ITask } from "../interfaces";

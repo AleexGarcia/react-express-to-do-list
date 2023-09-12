@@ -8,7 +8,7 @@ const Header = () => {
   const { setUser, isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const [colorMode, setColorMode] = useState<boolean>(false);
   const toggleColorMode = () => {
-    colorMode ? setColorMode(false) : setColorMode(true);
+    
   };
 
   const logout = () => {
