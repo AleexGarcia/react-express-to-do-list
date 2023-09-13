@@ -96,7 +96,7 @@ const Signup = () => {
       <hr />
       <Box className="text-center">
         <Text className="dark:text-primary-dark">
-          Already a user? <Link to={"/"}>LOGIN</Link>
+          Already a user? <Link className="text-blue-600" to={"/"}>LOGIN</Link>
         </Text>
       </Box>
     </Flex>
