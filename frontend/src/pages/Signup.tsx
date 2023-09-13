@@ -6,14 +6,16 @@ import * as Form from "@radix-ui/react-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const schema = yup.object({
-  name: yup.string().required("please enter your name"),
-  email: yup
-    .string()
-    .required("please enter your email")
-    .email("please provide a valid email"),
-  password: yup.string().required("please enter your password"),
-});
+const schema = yup
+  .object({
+    name: yup.string().required("please enter your name"),
+    email: yup
+      .string()
+      .required("please enter your email")
+      .email("please provide a valid email"),
+    password: yup.string().required("please enter your password"),
+  })
+  .required();
 
 type FormData = yup.InferType<typeof schema>;
 
@@ -27,18 +29,15 @@ const Signup = () => {
   });
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    
-    try{
-        await schema.validate(formData);
-        const { name, email, password } = formData;
-        const response = await signup(name, email, password)
-        
-        response.status === 201 && navigate("/") 
-     
-    }catch(err){
-        console.log(err);
+    try {
+      await schema.validate(formData);
+      const { name, email, password } = formData;
+      const response = await signup(name, email, password);
+
+      response.status === 201 && navigate("/");
+    } catch (err) {
+      console.log(err);
     }
-    
   };
 
   return (
@@ -49,23 +48,18 @@ const Signup = () => {
           <Form.FormField name="name">
             <Flex className="label">
               <Form.Label>Name: </Form.Label>
-              <Form.Message match={() => !!errors.name}>
+              <Form.Message className="error__message" match="valid">
                 {errors.name?.message}
               </Form.Message>
             </Flex>
             <Form.Control asChild>
-              <input
-
-                className="input"
-                type="text"
-                {...register("name")}
-              />
+              <input className="input" type="text" {...register("name")} />
             </Form.Control>
           </Form.FormField>
           <Form.Field name="email">
             <Flex className="label">
               <Form.Label>Email: </Form.Label>
-              <Form.Message match={() => !!errors.password}>
+              <Form.Message className="error__message" match="valid">
                 {errors.email?.message}
               </Form.Message>
             </Flex>
@@ -76,7 +70,7 @@ const Signup = () => {
           <Form.Field name="password">
             <Flex className="label">
               <Form.Label>Password: </Form.Label>
-              <Form.Message match={() => !!errors.password}>
+              <Form.Message className="error__message" match="valid">
                 {errors.password?.message}
               </Form.Message>
             </Flex>

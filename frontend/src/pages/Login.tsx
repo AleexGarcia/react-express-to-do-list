@@ -9,13 +9,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 
-const schema = yup.object({
-  email: yup
-    .string()
-    .required("please enter your email")
-    .email("please provide a valid email"),
-  password: yup.string().required("please enter your password"),
-});
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .required("please enter your email")
+      .email("please provide a valid email"),
+    password: yup.string().required("please enter your password"),
+  })
+  .required();
 
 type FormData = yup.InferType<typeof schema>;
 
@@ -53,15 +55,13 @@ const Login = () => {
       form
       "
     >
-      <Heading className="form__title">
-        SIGN IN
-      </Heading>
+      <Heading className="form__title">SIGN IN</Heading>
       <Form.Root onSubmit={handleSubmit(onSubmit)}>
-        <Flex className="flex flex-col gap-4">
+        <Flex className="flex flex-col gap-4 w-full">
           <Form.Field name="email">
             <Flex className="label">
               <Form.Label>Email: </Form.Label>
-              <Form.Message match={() => !!errors.password}>
+              <Form.Message className="error__message " match="valid">
                 {errors.email?.message}
               </Form.Message>
             </Flex>
@@ -74,9 +74,9 @@ const Login = () => {
             </Form.Control>
           </Form.Field>
           <Form.Field name="password">
-            <Flex className=" label">
+            <Flex className="label">
               <Form.Label>Password: </Form.Label>
-              <Form.Message match={() => !!errors.password}>
+              <Form.Message className="error__message " match="valid">
                 {errors.password?.message}
               </Form.Message>
             </Flex>
@@ -96,7 +96,7 @@ const Login = () => {
           </Form.Submit>
         </Flex>
         {isNotValid && (
-          <Box className="mt-2 text-center dark:text-primary-dark">
+          <Box className="mt-2 text-center error__message">
             <span>Invalid email / password</span>
           </Box>
         )}
@@ -104,7 +104,7 @@ const Login = () => {
       <hr />
       <Box className="text-center">
         <Text className="dark:text-primary-dark">
-          Need an account? <Link to={"/signup"}>SIGN UP</Link>
+          Need an account? <Link className="text-blue-600" to={"/signup"}>SIGN UP</Link>
         </Text>
       </Box>
     </Flex>
