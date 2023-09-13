@@ -128,6 +128,7 @@ const ToDo = () => {
       if (response.status === 204) {
         const list = toDos.filter((task) => !task.status);
         setToDos(list);
+        filterToDos('active');
       } else {
         throw console.error("Erro ao deletar user");
       }
