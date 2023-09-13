@@ -9,7 +9,7 @@
         @apply bg-white rounded-lg p-2 text-lg font-semibold hover:opacity-90
     }
     .form{
-        @apply max-w-[280px] sm:max-w-xs mx-auto p-6 w-full flex flex-col gap-2 rounded-lg bg-bg-default dark:bg-bg-dark
+        @apply max-w-[280px] sm:max-w-xs mx-auto p-6 w-full flex flex-col gap-6 rounded-lg bg-bg-default dark:bg-bg-dark
     }
     .input{
         @apply w-full px-1 py-2 border-1

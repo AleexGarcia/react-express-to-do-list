@@ -143,7 +143,7 @@ const ToDo = () => {
           <TextField.Root>
             <TextField.Input
               {...register("title", { required: true })}
-              className="bg-transparent outline-none w-full"
+              className="bg-transparent outline-none w-full text-primary-default dark:text-primary-dark"
               placeholder="Create a new todo..."
             />
             {errors.title && <span>This field is required</span>}
