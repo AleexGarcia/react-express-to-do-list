@@ -1,18 +1,15 @@
 import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
+    url:"postgres://to_do_list_db_oaw4_user:YNLbzvHap0oE4i1QONKiZta9bQQ25Ne0@dpg-ck11qtfdorps738v5dbg-a/to_do_list_db_oaw4",
     type: "postgres",
-    host: "localhost",
     port: 5432,
-    username: "postgres",
-    password: "123",
-    database: "db_to_do_list",
     synchronize: true,
     logging: true,
     entities: [
-        __dirname + "/entity/*.ts"
+        __dirname + "/entity/*.{ts,js}"
     ],
-    migrations: [__dirname + "/database/migrations/*.ts"],
+    migrations: [__dirname + "/database/migrations/*.{ts,js}"],
     subscribers: [],
 })
 
