@@ -28,7 +28,7 @@ const ToDo = () => {
   const token = getToken() as string;
   const [toDos, setToDos] = useState<Array<ITask>>([]);
   const [itemLeft, setItemLeft] = useState<number>(0);
-  const [active, setActive] = useState<null | string>(null)
+  const [active, setActive] = useState<null | string>(null);
   const {
     register,
     handleSubmit,
@@ -62,9 +62,9 @@ const ToDo = () => {
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     leftItems();
-  },[toDos])
+  }, [toDos]);
 
   const removeTask = async (id: string, token: string) => {
     try {
@@ -104,10 +104,10 @@ const ToDo = () => {
           params === "active"
             ? fullList.filter((task) => !task.status)
             : fullList.filter((task) => task.status);
-        if(filteredList.length > 0){
+        if (filteredList.length > 0) {
           setActive(params);
           setToDos(filteredList);
-        }    
+        }
       }
     });
   };
@@ -140,7 +140,7 @@ const ToDo = () => {
     <Flex className="flex-grow py-10 flex flex-col container max-w-[280px] sm:max-w-lg mx-auto text-primary-default dark:text-primary-dark gap-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex className="p-4 bg-bg-default dark:bg-bg-dark rounded-lg flex justify-between gap-4 items-center">
-          <TextField.Root>
+          <TextField.Root className="flex-grow">
             <TextField.Input
               {...register("title", { required: true })}
               className="bg-transparent outline-none w-full text-primary-default dark:text-primary-dark"
@@ -155,29 +155,51 @@ const ToDo = () => {
           </Tooltip>
         </Flex>
       </form>
-      <Flex className="flex flex-col rounded overflow-y-auto h-[45vh]">
-        {toDos?.map((task) => {
-          return (
-            <Task
-              key={task.id}
-              title={task.title}
-              status={task.status}
-              deleteTask={() => removeTask(task.id, token)}
-              updateTask={() => updateStatus(task.id, token)}
-            />
-          );
-        })}
+      <Flex className="flex flex-col rounded">
+        {toDos && (
+          <Flex className=" overflow-y-auto max-h-[45vh]">
+            {toDos?.map((task) => {
+              return (
+                <Task
+                  key={task.id}
+                  title={task.title}
+                  status={task.status}
+                  deleteTask={() => removeTask(task.id, token)}
+                  updateTask={() => updateStatus(task.id, token)}
+                />
+              );
+            })}
+          </Flex>
+        )}
         {toDos.length > 0 && (
           <Flex className="text-xs sm:text-sm flex flex-row justify-between p-4 bg-bg-default dark:bg-bg-dark rounded-b-lg">
-            <Text><span>{itemLeft}</span> item left</Text>
+            <Text>
+              <span>{itemLeft}</span> item left
+            </Text>
             <Flex className="flex flex-row  gap-1 sm:gap-4">
-              <Button className={`${active === 'all' ? 'font-bold':''}`} onClick={() => filterToDos("all")}>All</Button>
-              <Button className={`${active === 'active' ? 'font-bold':''}`} onClick={() => filterToDos("active")}>Active</Button>
-              <Button className={`${active === 'completed' ? 'font-bold':''}`} onClick={() => filterToDos("completed")}>
+              <Button
+                className={`${active === "all" ? "font-bold" : ""}`}
+                onClick={() => filterToDos("all")}
+              >
+                All
+              </Button>
+              <Button
+                className={`${active === "active" ? "font-bold" : ""}`}
+                onClick={() => filterToDos("active")}
+              >
+                Active
+              </Button>
+              <Button
+                className={`${active === "completed" ? "font-bold" : ""}`}
+                onClick={() => filterToDos("completed")}
+              >
                 Completed
               </Button>
             </Flex>
-            <Button className="hover:text-blue-500" onClick={() => clearCompleted(token)}>
+            <Button
+              className="hover:text-blue-500"
+              onClick={() => clearCompleted(token)}
+            >
               Clear Completed
             </Button>
           </Flex>

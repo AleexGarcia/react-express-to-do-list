@@ -1,12 +1,14 @@
 # Aplicação To-Do List Fullstack
 
-Bem-vindo à aplicação To-Do List Fullstack! Esta aplicação permite que os usuários gerenciem suas tarefas de maneira eficaz. Ela foi desenvolvida com Express, JWT e TypeORM para o backend, e React.js, Tailwind CSS, Radix UI e TypeScript para o frontend.
+Bem-vindo à aplicação To-Do List Fullstack! Esta aplicação permite que os usuários gerenciem suas tarefas de maneira eficaz. Ela foi desenvolvida com Express, JWT e TypeORM para o backend, e React.js, Tailwind CSS, Radix UI para o frontend. Banco de dados utilizado foi o PostgreSQL. 
+
+![captura da tela](/frontend/captura.png)
 
 ## Recursos
 
 - Autenticação segura com tokens JWT.
 - Cadastro e autenticação de usuários.
-- Criação, edição, exclusão e marcação de tarefas como completas.
+- Criação, exclusão e marcação de tarefas como completas.
 - Listagem de tarefas com opção de filtragem por status.
 - Interface responsiva para uso em dispositivos móveis e desktop.
 
@@ -15,7 +17,7 @@ Bem-vindo à aplicação To-Do List Fullstack! Esta aplicação permite que os u
 ### Pré-requisitos
 
 - Node.js e npm instalados.
-- Banco de dados (por exemplo, PostgreSQL) configurado.
+- Banco de dados PostgreSQL configurado.
 
 ### Backend (Express, JWT, TypeORM)
 
@@ -29,11 +31,11 @@ cd backend
 ```bash
 npm install
 ```
-3. Configure o banco de dados: Abra o arquivo ormconfig.json e ajuste as configurações de conexão do banco de dados.
+3. Configure o banco de dados: Abra o arquivo data-source.ts e ajuste as configurações de conexão do banco de dados.
 
 4. Execute as migrações para criar as tabelas do banco de dados:
 ```bash
-npm run typeorm migration:run
+npm run migration:run
 ```
 5. Inicie o servidor:
 ```bash
@@ -75,7 +77,7 @@ Autenticação:
 Criar Tarefa:
 
 + Os usuários autenticados devem poder criar novas tarefas.
-+ Cada tarefa deve ter um título, uma descrição opcional e um status que indica se a tarefa está completa ou não.
++ Cada tarefa deve ter um título e um status que indica se a tarefa está completa ou não.
 
 Listar Tarefas:
 
@@ -86,10 +88,6 @@ Marcar Tarefa como Completa:
 
 + Os usuários devem poder marcar uma tarefa como completa.
 + A interface deve refletir visualmente o status da tarefa.
-
-Editar Tarefa:
-
-+ Os usuários devem poder editar o título e a descrição de uma tarefa existente.
 
 Excluir Tarefa:
 
@@ -117,13 +115,13 @@ Performance:
 
 User:
 
-+ Atributos: id, username, email, password (hash)
++  Atributos: id, username, email, password
 +  Relações: Uma User tem muitas Task
-+  Métodos: authenticate(password), generateAuthToken()
++ Métodos: Nenhum método especial
 
 Task:
 
-+ Atributos: id, title, description, status (boolean), userId
++ Atributos: id, title, status (boolean), userId
 + Relações: Uma Task pertence a um User
 + Métodos: Nenhum método especial
 
@@ -135,7 +133,10 @@ Routes:
 
 + /auth/signup: Rota para cadastro de novos usuários
 + /auth/login: Rota para autenticação e geração de token JWT
-+ /tasks: Rota para listar, criar e gerenciar tarefas do usuário autenticado
++ /auth/verify: Rota para verificar a autenticidade do token JWT
++ /task/: Rota criar uma nova tarefa do usuario autenticado
++ /task/id: Rota para recuperar, deletar e atualizar tarefa do usuário autenticado
++ /tasks: Rota para listar todas a tarefas e deletar as tarefas concluidas do usuário autenticado
 
 ### Contribuição
 
