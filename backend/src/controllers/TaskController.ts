@@ -35,7 +35,7 @@ export class TaskController {
     }
 
     getAllTasks = async (request: Request, response: Response): Promise<Response> => {
-        const { userId } = request.body;
+        const userId = request.body.userId;
         let resDB = await this.taskService.getAllTasks(userId);
         if (!resDB) return response.status(404).json({ message: 'Not Found' })
         const tasks = resDB.map(task => {
@@ -76,8 +76,13 @@ export class TaskController {
         return response.status(400).json({ message: 'Not Found' })
     }
 
-    deleteAllTasks =async (request: Request, response: Response) => {
-        
+    deleteCompletedTasks = async (request: Request, response: Response) => {
+        const userId = request.body.userId;
+        const deleteResult = await this.taskService.deleteCompletedTasks(userId);
+        if (deleteResult.affected) {
+            return response.status(204).json({ message: 'No Content' })
+        }
+        return response.status(400).json({ message: 'Not Found' })
     }
 
 }

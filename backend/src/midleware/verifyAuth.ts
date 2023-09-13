@@ -8,7 +8,7 @@ export function verifyAuth (request: Request, response: Response, next: NextFunc
         const [ ,token] = authToken.split(' ');
         try{
             const { sub } = verify(token, '#x82$cs<QK#^<I2`MsE%;:sGD4?I+6bx:U6BFDX?:sJz&rIw47$@%t|Y|Wv3.fE');
-         
+            request.body['userId'] = sub;
             return next();
         }catch(err){
             return response.status(401).json({message: 'Unauthorized'})

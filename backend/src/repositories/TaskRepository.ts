@@ -38,4 +38,12 @@ export class TaskRepository {
   deleteTask = async (id: string): Promise<DeleteResult> => {
     return await this.manager.delete(Task,{id: id});
   }
+  deleteCompletedTasks = async (userId: string): Promise<DeleteResult> => {
+    return await this.manager
+    .createQueryBuilder()
+    .delete()
+    .from(Task)
+    .where("userId = :userId AND status = :status", { userId, status: true })
+    .execute()
+  }
 }

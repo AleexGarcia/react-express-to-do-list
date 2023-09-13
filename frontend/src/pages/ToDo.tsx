@@ -9,10 +9,11 @@ import {
 import { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ITask } from "../interfaces";
-import Task from "./Task";
+import Task from "../components/Task";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   createTask,
+  deleteCompletedTasks,
   deleteTask,
   getAllTasks,
   updateTask,
@@ -26,6 +27,7 @@ type Inputs = {
 const ToDo = () => {
   const token = getToken() as string;
   const [toDos, setToDos] = useState<Array<ITask>>([]);
+  const [itemLeft, setItemLeft] = useState<number>(0);
   const {
     register,
     handleSubmit,
@@ -49,6 +51,12 @@ const ToDo = () => {
     if (token) {
       getAllTasks(token).then((response) => {
         setToDos(response.data);
+        const fullList: Array<ITask> = response.data;
+        const leftItems = fullList.reduce((total, task) => {
+          if (!task.status) return total + 1;
+          return total;
+        }, 0);
+        setItemLeft(leftItems);
       });
     }
   }, []);
@@ -68,6 +76,13 @@ const ToDo = () => {
   const updateStatus = async (id: string, token: string) => {
     try {
       await updateTask(id, token);
+      const list = toDos.map((task) => {
+        if (task.id === id) {
+          task.status = true;
+        }
+        return task;
+      });
+      setToDos(list);
     } catch (err: any) {
       console.log(err.message);
     }
@@ -86,6 +101,30 @@ const ToDo = () => {
         setToDos(filteredList);
       }
     });
+  };
+
+  const leftItems = async () => {
+    const response = await getAllTasks(token);
+    const fullList: Array<ITask> = response.data;
+    const leftItems = fullList.reduce((total, task) => {
+      if (!task.status) return total + 1;
+      return total;
+    }, 0);
+    setItemLeft(leftItems);
+  };
+
+  const clearCompleted = async (token: string) => {
+    try {
+      const response = await deleteCompletedTasks(token);
+      if (response.status === 204) {
+        const list = toDos.filter((task) => !task.status);
+        setToDos(list);
+      } else {
+        throw console.error("Erro ao deletar user");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
 
   return (
@@ -119,10 +158,10 @@ const ToDo = () => {
             />
           );
         })}
-        {toDos && (
+        {toDos.length > 0 && (
           <Flex className="flex flex-row justify-between p-4 bg-bg-default dark:bg-bg-dark rounded-b-lg">
             <Text>
-              <span>5</span> item left
+              <span>{itemLeft}</span> item left
             </Text>
             <Flex className="flex flex-row gap-4">
               <Button onClick={() => filterToDos("all")}>All</Button>
@@ -131,7 +170,9 @@ const ToDo = () => {
                 Completed
               </Button>
             </Flex>
-            <Button>Clear Completed</Button>
+            <Button onClick={() => clearCompleted(token)}>
+              Clear Completed
+            </Button>
           </Flex>
         )}
       </Flex>
