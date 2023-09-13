@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf ./build && tsc",
+    "migration:start": "npx typeorm-ts-node-commonjs  migration:run -d build/data-source.js" ,
     "start": "node build/index.js",
     "dev": "ts-node-dev src/index.ts",
     "test": "jest",
