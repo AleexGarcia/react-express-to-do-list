@@ -28,6 +28,7 @@ const ToDo = () => {
   const token = getToken() as string;
   const [toDos, setToDos] = useState<Array<ITask>>([]);
   const [itemLeft, setItemLeft] = useState<number>(0);
+  const [active, setActive] = useState<null | string>(null)
   const {
     register,
     handleSubmit,
@@ -61,6 +62,10 @@ const ToDo = () => {
     }
   }, []);
 
+  useEffect(()=>{
+    leftItems();
+  },[toDos])
+
   const removeTask = async (id: string, token: string) => {
     try {
       const res = await deleteTask(id, token);
@@ -92,13 +97,17 @@ const ToDo = () => {
     getAllTasks(token).then((response) => {
       const fullList: Array<ITask> = response.data;
       if (params === "all") {
+        setActive(params);
         setToDos(fullList);
       } else {
         const filteredList =
           params === "active"
             ? fullList.filter((task) => !task.status)
             : fullList.filter((task) => task.status);
-        setToDos(filteredList);
+        if(filteredList.length > 0){
+          setActive(params);
+          setToDos(filteredList);
+        }    
       }
     });
   };
@@ -159,18 +168,16 @@ const ToDo = () => {
           );
         })}
         {toDos.length > 0 && (
-          <Flex className="flex flex-row justify-between p-4 bg-bg-default dark:bg-bg-dark rounded-b-lg">
-            <Text>
-              <span>{itemLeft}</span> item left
-            </Text>
-            <Flex className="flex flex-row gap-4">
-              <Button onClick={() => filterToDos("all")}>All</Button>
-              <Button onClick={() => filterToDos("active")}>Active</Button>
-              <Button onClick={() => filterToDos("completed")}>
+          <Flex className="text-xs sm:text-sm flex flex-row justify-between p-4 bg-bg-default dark:bg-bg-dark rounded-b-lg">
+            <Text><span>{itemLeft}</span> item left</Text>
+            <Flex className="flex flex-row  gap-1 sm:gap-4">
+              <Button className={`${active === 'all' ? 'font-bold':''}`} onClick={() => filterToDos("all")}>All</Button>
+              <Button className={`${active === 'active' ? 'font-bold':''}`} onClick={() => filterToDos("active")}>Active</Button>
+              <Button className={`${active === 'completed' ? 'font-bold':''}`} onClick={() => filterToDos("completed")}>
                 Completed
               </Button>
             </Flex>
-            <Button onClick={() => clearCompleted(token)}>
+            <Button className="hover:text-blue-500" onClick={() => clearCompleted(token)}>
               Clear Completed
             </Button>
           </Flex>
