@@ -4,7 +4,7 @@ import { router } from './routes';
 import cors from 'cors';
 
 const corsOptions = {
-    origin:'http://localhost:3000', 
+    origin:'https://to-do-list-ten-ruby.vercel.app/', 
     credentials: true,            
     optionSuccessStatus:200
 }
