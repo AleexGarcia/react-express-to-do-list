@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../services/authService";
@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import { FormButton } from "../components/FormButton";
 
 const schema = yup
   .object({
@@ -32,13 +33,14 @@ const Login = () => {
   const [isNotValid, setValid] = useState(false);
   const navigate = useNavigate();
   const { setIsLoggedIn } = useContext(AppContext);
-
+  const [isPromise, setPromise] = useState(false);
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
       await schema.validate(formData);
       const { email, password } = formData;
+      setValid(false);
+      setPromise(true);
       const response = await login(email, password);
-
       if (response.status === 200) {
         saveToken(response.data.token);
         setIsLoggedIn(true);
@@ -46,6 +48,7 @@ const Login = () => {
       }
     } catch (error: any) {
       setValid(true);
+      setPromise(false);
     }
   };
 
@@ -90,9 +93,7 @@ const Login = () => {
             </Form.Control>
           </Form.Field>
           <Form.Submit asChild>
-            <Button className="button" type="submit">
-              Login
-            </Button>
+            <FormButton mainContent="Login" content="Logging" state = {isPromise}/>
           </Form.Submit>
         </Flex>
         {isNotValid && (
@@ -104,7 +105,10 @@ const Login = () => {
       <hr />
       <Box className="text-center">
         <Text className="dark:text-primary-dark">
-          Need an account? <Link className="text-blue-600" to={"/signup"}>SIGN UP</Link>
+          Need an account?{" "}
+          <Link className="text-blue-600" to={"/signup"}>
+            SIGN UP
+          </Link>
         </Text>
       </Box>
     </Flex>

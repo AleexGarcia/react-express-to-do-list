@@ -33,11 +33,13 @@ npm install
 ```
 3. Configure o banco de dados: Abra o arquivo data-source.ts e ajuste as configurações de conexão do banco de dados.
 
-4. Execute as migrações para criar as tabelas do banco de dados:
+4. Configure o cors: abra o index.ts em corsOptions  adicione a url, http://localhost:3000 , em origin. 
+
+5. Execute as migrações para criar as tabelas do banco de dados:
 ```bash
 npm run migration:run
 ```
-5. Inicie o servidor:
+6. Inicie o servidor:
 ```bash
 npm run dev
 ```
@@ -52,7 +54,9 @@ cd frontend
 ```bash
 npm install
 ```
-3. Inicie o aplicativo de desenvolvimento:
+3. Configure a api: abra o arquivo api.ts localizado em "src/services/" e em baseURL adicione a URL do servidor em execução. http://localhost:3001 
+
+4. Inicie o aplicativo de desenvolvimento:
 ```bash
 npm run dev
 ```
@@ -141,4 +145,3 @@ Routes:
 ### Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir problemas (issues) e enviar pull requests para melhorias.
-
